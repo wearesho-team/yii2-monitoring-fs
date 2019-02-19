@@ -36,6 +36,27 @@ class FsTest extends TestCase
      * @expectedExceptionMessage Ошибка чтения из файлового хранилища
      * @expectedExceptionCode 1001
      */
+    public function testPut(): void
+    {
+        $fsMock = $this->createMock(Yii\Filesystem\Filesystem::class);
+        $fsMock->expects($this->once())
+            ->method('put')
+            ->with(static::PATH, static::BIN_TO_HEX_MOCK, ['visibility' => 'public'])
+            ->willReturnSelf();
+        $fs = new Yii\Monitoring\Control\Fs([
+            'client' => $this->createMock(Client::class),
+            'fs' => $fsMock,
+        ]);
+
+        $fs->execute();
+    }
+
+    /**
+     * @depends testPut
+     * @expectedException \Horat1us\Yii\Monitoring\Exception
+     * @expectedExceptionMessage Ошибка чтения из файлового хранилища
+     * @expectedExceptionCode 1001
+     */
     public function testFailedRead(): void
     {
         $fs = new Yii\Monitoring\Control\Fs([
@@ -47,6 +68,7 @@ class FsTest extends TestCase
     }
 
     /**
+     * @depends testPut
      * @expectedException \Horat1us\Yii\Monitoring\Exception
      * @expectedExceptionMessage Ошибка прав доступа файлового хранилища
      * @expectedExceptionCode 1002
@@ -67,6 +89,7 @@ class FsTest extends TestCase
     }
 
     /**
+     * @depends testPut
      * @expectedException \Horat1us\Yii\Monitoring\Exception
      * @expectedExceptionMessage Ошибка публичного чтения из файлового хранилища
      * @expectedExceptionCode 1003
@@ -96,6 +119,7 @@ class FsTest extends TestCase
     }
 
     /**
+     * @depends testPut
      * @expectedException \Horat1us\Yii\Monitoring\Exception
      * @expectedExceptionMessage Ошибка удаления тестового файлов из файлового хранилища
      * @expectedExceptionCode 1004
@@ -127,6 +151,9 @@ class FsTest extends TestCase
         $fs->execute();
     }
 
+    /**
+     * @depends testPut
+     */
     public function testSuccess(): void
     {
         $client = $this->createMock(Client::class);
