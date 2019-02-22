@@ -1,4 +1,6 @@
 # Yii2 Filesystem Monitoring
+[![Build Status](https://travis-ci.org/wearesho-team/yii2-monitoring-fs.svg?branch=master)](https://travis-ci.org/wearesho-team/yii2-monitoring-fs)
+[![codecov](https://codecov.io/gh/wearesho-team/yii2-monitoring-fs/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/yii2-monitoring-fs)
 
 ## Installation
 
