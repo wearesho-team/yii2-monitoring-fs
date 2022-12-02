@@ -1,5 +1,7 @@
 # Yii2 Filesystem Monitoring
-[![Build Status](https://travis-ci.org/wearesho-team/yii2-monitoring-fs.svg?branch=master)](https://travis-ci.org/wearesho-team/yii2-monitoring-fs)
+[![Tests & Lint](https://github.com/wearesho-team/yii2-monitoring-fs/actions/workflows/php.yml/badge.svg?branch=master)](https://github.com/wearesho-team/yii2-monitoring-fs/actions/workflows/php.yml)
+[![Latest Stable Version](https://poser.pugx.org/wearesho-team/yii2-monitoring-fs/v/stable.png)](https://packagist.org/packages/wearesho-team/yii2-monitoring-fs)
+[![Total Downloads](https://poser.pugx.org/wearesho-team/yii2-monitoring-fs/downloads.png)](https://packagist.org/packages/wearesho-team/yii2-monitoring-fs)
 [![codecov](https://codecov.io/gh/wearesho-team/yii2-monitoring-fs/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/yii2-monitoring-fs)
 
 ## Installation
