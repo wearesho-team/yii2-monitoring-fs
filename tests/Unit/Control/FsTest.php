@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Visibility;
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 use Wearesho\Yii;
@@ -34,9 +36,9 @@ class FsTest extends TestCase
 
     public function testPut(): void
     {
-        $fsMock = $this->createMock(Yii\Filesystem\Filesystem::class);
+        $fsMock = $this->createMock(Filesystem::class);
         $fsMock->expects($this->once())
-            ->method('put')
+            ->method('write')
             ->with(static::PATH, static::BIN_TO_HEX_MOCK, ['visibility' => 'public'])
             ->willReturnSelf();
         $fs = new Yii\Monitoring\Control\Fs([
@@ -54,7 +56,7 @@ class FsTest extends TestCase
     {
         $fs = new Yii\Monitoring\Control\Fs([
             'client' => $this->createMock(Client::class),
-            'fs' => $this->createMock(Yii\Filesystem\Filesystem::class),
+            'fs' => $this->createMock(Filesystem::class),
         ]);
 
         $this->expectException(Monitoring\Exception::class);
@@ -68,7 +70,7 @@ class FsTest extends TestCase
      */
     public function testFailedGetVisibility(): void
     {
-        $fsMock = $this->createMock(Yii\Filesystem\Filesystem::class);
+        $fsMock = $this->createMock(Filesystem::class);
         $fsMock->expects($this->once())
             ->method('read')
             ->with()
@@ -98,15 +100,15 @@ class FsTest extends TestCase
                 new Response()
             ));
 
-        $fsMock = $this->createMock(Yii\Filesystem\Filesystem::class);
+        $fsMock = $this->createMock(Filesystem::class);
         $fsMock->expects($this->once())
             ->method('read')
             ->with(static::PATH)
             ->willReturn(static::BIN_TO_HEX_MOCK);
         $fsMock->expects($this->once())
-            ->method('getVisibility')
+            ->method('visibility')
             ->with(static::PATH)
-            ->willReturn('public');
+            ->willReturn(Visibility::PUBLIC);
         $fs = new Yii\Monitoring\Control\Fs([
             'client' => $client,
             'fs' => $fsMock,
@@ -128,17 +130,17 @@ class FsTest extends TestCase
             ->method('request')
             ->willReturn(new Response(200, [], static::BIN_TO_HEX_MOCK));
 
-        $fsMock = $this->createMock(Yii\Filesystem\Filesystem::class);
+        $fsMock = $this->createMock(Filesystem::class);
         $fsMock->expects($this->once())
             ->method('read')
             ->with(static::PATH)
             ->willReturn(static::BIN_TO_HEX_MOCK);
         $fsMock->expects($this->once())
-            ->method('getVisibility')
+            ->method('visibility')
             ->with(static::PATH)
-            ->willReturn('public');
+            ->willReturn(Visibility::PUBLIC);
         $fsMock->expects($this->once())
-            ->method('has')
+            ->method('fileExists')
             ->willReturn(true);
         $fs = new Yii\Monitoring\Control\Fs([
             'client' => $client,
@@ -161,18 +163,15 @@ class FsTest extends TestCase
             ->method('request')
             ->willReturn(new Response(200, [], static::BIN_TO_HEX_MOCK));
 
-        $fsMock = $this->createMock(Yii\Filesystem\Filesystem::class);
+        $fsMock = $this->createMock(Filesystem::class);
         $fsMock->expects($this->once())
             ->method('read')
             ->with(static::PATH)
             ->willReturn(static::BIN_TO_HEX_MOCK);
         $fsMock->expects($this->once())
-            ->method('getVisibility')
+            ->method('visibility')
             ->with(static::PATH)
-            ->willReturn('public');
-        $fsMock->expects($this->once())
-            ->method('getAdapter')
-            ->willReturn($this->createMock(Yii\Filesystem\S3\Adapter::class));
+            ->willReturn(Visibility::PUBLIC);
         $fs = new Yii\Monitoring\Control\Fs([
             'client' => $client,
             'fs' => $fsMock,
@@ -180,6 +179,6 @@ class FsTest extends TestCase
 
         $result = $fs->execute();
 
-        $this->assertArrayHasKey('adapter', $result);
+        $this->assertArrayHasKey('filesystem', $result);
     }
 }

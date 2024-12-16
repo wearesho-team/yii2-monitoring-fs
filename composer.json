@@ -17,10 +17,10 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.1",
         "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5",
-        "horat1us/yii2-monitoring": "^1.2",
-        "wearesho-team/yii2-filesystem": "^4.2",
+        "horat1us/yii2-monitoring": "^1.5",
+        "wearesho-team/yii2-filesystem": "^5.1",
         "yiisoft/yii2": "^2.0.47"
     },
     "require-dev": {
@@ -42,7 +42,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.4.33"
+            "php": "8.1"
         },
         "allow-plugins": {
             "yiisoft/yii2-composer": true

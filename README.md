@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-composer require wearesho-team/yii2-monitoring-fs
+composer require wearesho-team/yii2-monitoring-fs:^2.0
 ```
 
 ## Usage
@@ -25,10 +25,10 @@ class MonitoringController extends \yii\console\Controller
 {
     public function actionIndex()
     {
-        /** @var \Wearesho\Yii\Filesystem\AdapterInterface $adapter */
+        /** @var \League\Flysystem\Filesystem $fs */
         
         $control = new Monitoring\Control\Fs([
-            'fs' => $adapter,
+            'fs' => $fs,
             'client' => new \GuzzleHttp\Client(),
         ]);
         

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Wearesho\Yii\Monitoring\Control;
 
 use GuzzleHttp;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\Visibility;
 use yii\di;
 use yii\base;
 use Horat1us\Yii\Monitoring;
-use Wearesho\Yii\Filesystem\Filesystem;
+use League\Flysystem\Filesystem;
 
 /**
  * Class Fs
@@ -22,11 +22,9 @@ class Fs extends Monitoring\Control
     public const CODE_PUBLIC_CONTENTS = 1003;
     public const CODE_DELETE = 1004;
 
-    /** @var string|array|Filesystem */
-    public $fs = 'fs';
+    public Filesystem|array|string $fs = 'fs';
 
-    /** @var string|array|GuzzleHttp\ClientInterface */
-    public $client = GuzzleHttp\ClientInterface::class;
+    public GuzzleHttp\ClientInterface|array|string $client = GuzzleHttp\ClientInterface::class;
 
     /**
      * @throws base\InvalidConfigException
@@ -46,8 +44,8 @@ class Fs extends Monitoring\Control
     {
         $contents = bin2hex(random_bytes(512));
         $path = 'test/fstest_' . microtime(true) . '.txt';
-        $this->fs->put($path, $contents, [
-            'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
+        $this->fs->write($path, $contents, [
+            'visibility' => Visibility::PUBLIC,
         ]);
 
         $fsContents = $this->fs->read($path);
@@ -58,15 +56,15 @@ class Fs extends Monitoring\Control
             static::CODE_FS_CONTENTS
         );
 
-        $fsVisibility = $this->fs->getVisibility($path);
+        $fsVisibility = $this->fs->visibility($path);
         $this->assertEquals(
-            AdapterInterface::VISIBILITY_PUBLIC,
+            Visibility::PUBLIC,
             $fsVisibility,
             "Ошибка прав доступа файлового хранилища",
             static::CODE_PERMISSIONS
         );
 
-        $publicUrl = $this->fs->getUrl($path);
+        $publicUrl = $this->fs->publicUrl($path);
         try {
             $response = $this->client->request('get', $publicUrl);
         } catch (GuzzleHttp\Exception\GuzzleException $e) {
@@ -86,7 +84,7 @@ class Fs extends Monitoring\Control
         );
 
         $this->fs->delete($path);
-        if ($this->fs->has($path)) {
+        if ($this->fs->fileExists($path)) {
             throw new Monitoring\Exception(
                 "Ошибка удаления тестового файлов из файлового хранилища",
                 static::CODE_DELETE
@@ -94,7 +92,7 @@ class Fs extends Monitoring\Control
         }
 
         return [
-            'adapter' => get_class($this->fs->getAdapter()),
+            'filesystem' => get_class($this->fs),
         ];
     }
 }
