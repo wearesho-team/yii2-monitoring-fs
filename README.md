@@ -4,10 +4,12 @@
 [![Total Downloads](https://poser.pugx.org/wearesho-team/yii2-monitoring-fs/downloads.png)](https://packagist.org/packages/wearesho-team/yii2-monitoring-fs)
 [![codecov](https://codecov.io/gh/wearesho-team/yii2-monitoring-fs/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/yii2-monitoring-fs)
 
+Compatibility: tested on PHP 8.4, PHP 8.5
+
 ## Installation
 
 ```bash
-composer require wearesho-team/yii2-monitoring-fs:^2.0
+composer require wearesho-team/yii2-monitoring-fs:^2.1
 ```
 
 ## Usage
