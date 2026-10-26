@@ -93,7 +93,7 @@ class FsTest extends TestCase
             ->method('request')
             ->willThrowException(new BadResponseException(
                 'Some exception',
-                new Request('get', 'url'),
+                new Request('GET', 'url'),
                 new Response()
             ));
 
@@ -154,6 +154,7 @@ class FsTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('request')
+            ->with('GET', $this->anything())
             ->willReturn(new Response(200, [], static::BIN_TO_HEX_MOCK));
 
         $fsMock = $this->createMock(Filesystem::class);
