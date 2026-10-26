@@ -2,6 +2,7 @@
 
 namespace Wearesho\Yii\Monitoring\Tests\Unit\Control;
 
+use PHPUnit\Framework\Attributes\Depends;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
@@ -42,7 +43,7 @@ class FsTest extends TestCase
             ->with(static::PATH, static::BIN_TO_HEX_MOCK, ['visibility' => 'public'])
             ->willReturnSelf();
         $fs = new Yii\Monitoring\Control\Fs([
-            'client' => $this->createMock(Client::class),
+            'client' => $this->createStub(Client::class),
             'fs' => $fsMock,
         ]);
 
@@ -55,8 +56,8 @@ class FsTest extends TestCase
     public function testFailedRead(): void
     {
         $fs = new Yii\Monitoring\Control\Fs([
-            'client' => $this->createMock(Client::class),
-            'fs' => $this->createMock(Filesystem::class),
+            'client' => $this->createStub(Client::class),
+            'fs' => $this->createStub(Filesystem::class),
         ]);
 
         $this->expectException(Monitoring\Exception::class);
@@ -65,9 +66,7 @@ class FsTest extends TestCase
         $fs->execute();
     }
 
-    /**
-     * @depends testPut
-     */
+    #[Depends('testPut')]
     public function testFailedGetVisibility(): void
     {
         $fsMock = $this->createMock(Filesystem::class);
@@ -76,7 +75,7 @@ class FsTest extends TestCase
             ->with()
             ->willReturn(static::BIN_TO_HEX_MOCK);
         $fs = new Yii\Monitoring\Control\Fs([
-            'client' => $this->createMock(Client::class),
+            'client' => $this->createStub(Client::class),
             'fs' => $fsMock,
         ]);
 
@@ -86,9 +85,7 @@ class FsTest extends TestCase
         $fs->execute();
     }
 
-    /**
-     * @depends testPut
-     */
+    #[Depends('testPut')]
     public function testFailedGetUrl(): void
     {
         $client = $this->createMock(Client::class);
@@ -120,9 +117,7 @@ class FsTest extends TestCase
         $fs->execute();
     }
 
-    /**
-     * @depends testPut
-     */
+    #[Depends('testPut')]
     public function testFailedDelete(): void
     {
         $client = $this->createMock(Client::class);
@@ -153,9 +148,7 @@ class FsTest extends TestCase
         $fs->execute();
     }
 
-    /**
-     * @depends testPut
-     */
+    #[Depends('testPut')]
     public function testSuccess(): void
     {
         $client = $this->createMock(Client::class);
