@@ -66,7 +66,7 @@ class Fs extends Monitoring\Control
 
         $publicUrl = $this->fs->publicUrl($path);
         try {
-            $response = $this->client->request('get', $publicUrl);
+            $response = $this->client->request('GET', $publicUrl);
         } catch (GuzzleHttp\Exception\GuzzleException $e) {
             throw new Monitoring\Exception(
                 "Ошибка публичного чтения из файлового хранилища",
