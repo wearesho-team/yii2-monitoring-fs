@@ -19,7 +19,7 @@
     "require": {
         "php": ">=8.4",
         "guzzlehttp/guzzle": "^7.8.2",
-        "horat1us/yii2-monitoring": "^1.5",
+        "horat1us/yii2-monitoring": "^1.6",
         "wearesho-team/yii2-filesystem": "^5.1",
         "yiisoft/yii2": "^2.0.54"
     },
